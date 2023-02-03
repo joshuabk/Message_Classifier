@@ -61,10 +61,11 @@ def tokenize(text):
 
 
 def build_model():
-    #create pipline
+    '''create pipline with the needed parameters
 
-    # returns model that is grid search opitmized
-    # the optimization took an unreasonable amount of time
+    returns model that is grid search opitmized
+    model'''
+    
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
@@ -101,7 +102,9 @@ def evaluate_model(model, X_test, Y_test, category_names):
     
 #save model to pickle file
 def save_model(model, model_filepath):
-    '''saves the model to a pickle file'''
+    '''
+    Input: ML model and the filepath to where the modle should be saved
+    saves the model to a pickle file'''
 
 
     filename = model_filepath
@@ -113,7 +116,7 @@ def save_model(model, model_filepath):
 
 def main():
 
-    #runs the functions
+    '''runs the functions'''
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))

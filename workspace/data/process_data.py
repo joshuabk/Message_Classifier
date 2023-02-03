@@ -5,7 +5,11 @@ from sqlalchemy import create_engine
 
 
 def load_data(messages_filepath, categories_filepath):
-    '''takes in data filepahts and returns a merged dataframe with the data'''
+
+    '''
+      creates a dataframe from the data files
+      Input is the data filepahts 
+      returns a merged dataframe with the data'''
     messages = pd.read_csv(messages_filepath)
     messages.head()
     categories = pd.read_csv(categories_filepath)
@@ -15,7 +19,9 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
-    '''takes in the data frame and returns a cleaned dataframe'''
+    '''cleans the data in the dataframe
+      Input takes in the dataframe 
+       returns a cleaned dataframe'''
     categories = df['categories'].str.split(';', expand=True)
     
     row = categories.iloc[0]
@@ -23,9 +29,11 @@ def clean_data(df):
     category_colnames = row.apply(lambda x : x[:-2])
     print(category_colnames)
     categories.columns = category_colnames
-    for column in categories:
+    for column in categories.columns:
    
         categories[column] = categories[column].str[-1]
+        categories[column].replace('2','1',inplace = True)
+        categories[column].replace(2,1,inplace = True)
         categories[column] = categories[column].astype(int)
     
     
@@ -39,9 +47,9 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
-    '''takes in dataframe and database file name and saves the database to a file'''
+    '''Input is a dataframe and database file name and saves the database to a file'''
     engine = create_engine('sqlite:///'+database_filename)
-    df.to_sql('messages', engine, index=False)
+    df.to_sql('messages', engine, index=False,  if_exists='replace')
       
 
 
